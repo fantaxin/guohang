@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中国国际航空公司行李托运计算器</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="cal.js" type="text/javascript"></script>
+    <script src="calculate.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="total1">
+    <div class="top">
+        <img src="../resource/logo.gif">
+        <font size="9"  style="font-family: 楷体">中国国际航空公司行李托运计算器</font>
+    </div>
+    <div class="main">
+        <div>
+            <select name="passenger_type" id="passenger_type" class="sel">
+                <option selected value="NULL">请选择旅客类型</option>
+                <option value="adult">成人或儿童</option>
+                <option value="baby">婴儿</option>
+            </select>
+            <select name="vip_type" id="vip_type" class="sel">
+                <option selected value="NULL">请选择会员类型</option>
+                <option value="vip0">普通旅客</option>
+                <option value="vip1">凤凰知音终身白金卡、白金卡旅客</option>
+                <option value="vip2">凤凰知音金卡、银卡、星空联盟金卡旅客</option>
+            </select>
+            <select name="cabin_type" id="cabin_type" class="sel">
+                <option selected value="NULL">请选择机舱类别</option>
+                <option value="cabin0">头等舱</option>
+                <option value="cabin1">公务舱</option>
+                <option value="cabin2">悦享经济舱、超级经济舱</option>
+                <option value="cabin3">经济舱</option>
+            </select>
+            <select name="air_line" id="air_line" class="sel">
+                <option selected value="NULL">请选择航线</option>
+                <option value="region0">国内航线</option>
+                <option value="region1">区域一</option>
+                <option value="region2">区域二</option>
+                <option value="region3">区域三</option>
+                <option value="region4">区域四</option>
+                <option value="region5">区域五</option>
+            </select>
+            <input id="ticket_price" type="number" min="0" max="max" placeholder="请输入机票价格" onblur="limitNum(this)"/>
+            <!--
+            区域一：美洲（除美国/加拿大外）/加勒比海地区与欧洲/非洲/中东/亚洲/西南太平洋之间的航线；
+            区域二：欧洲/中东与非洲/亚洲/西南太平洋之间航线；日本与西南太平洋之间航线；日本/西南太平洋与亚洲（不含日本及西南太平洋）/非洲之间航线；
+            区域三：加拿大与美洲（除美国/加拿大外）/加勒比海地区/欧洲/非洲/中东/亚洲/西南太平洋之间航线；
+            区域四：美国（含夏威夷）与美洲（除美国外）/加勒比海地区/欧洲/非洲/中东/亚洲/西南太平洋之间航线；
+            区域五：非洲与亚洲（除日本外)之间航线；欧洲与中东之间航线；亚洲（除日本)内航线；美洲（除美国/加拿大）及加勒比海地区内航线；上述未列明的航线;
+            -->
+            <input id="addTmplFile" type="button" value="添加行李" onclick="addTmplFile()" />
+            <input id="cal" type="button" value="计算行李托运费"  onclick="cal()"/>
+            <input id="cost" type="text" disabled="disabled" value="0￥">
+
+        </div>
+
+        <div class="main_text">
+            <p>区域一：美洲（除美国/加拿大外）/加勒比海地区与欧洲/非洲/中东/亚洲/西南太平洋之间的航线；</p>
+            <p>区域二：欧洲/中东与非洲/亚洲/西南太平洋之间航线；日本与西南太平洋之间航线；日本/西南太平洋与亚洲（不含日本及西南太平洋）/非洲之间航线；</p>
+            <p>区域三：加拿大与美洲（除美国/加拿大外）/加勒比海地区/欧洲/非洲/中东/亚洲/西南太平洋之间航线；</p>
+            <p>区域四：美国（含夏威夷）与美洲（除美国外）/加勒比海地区/欧洲/非洲/中东/亚洲/西南太平洋之间航线；</p>
+            <p>区域五：非洲与亚洲（除日本外)之间航线；欧洲与中东之间航线；亚洲（除日本)内航线；美洲（除美国/加拿大）及加勒比海地区内航线；上述未列明的航线;</p>
+        </div>
+
+        <div>
+            <table id="table1" cellspacing="0px">
+                <tr class="tableTitle" align="center">
+                    <td class="col1">行李编号</td>
+                    <td class="col2">行李类型</td>
+                    <td class="col3">行李尺寸(CM)</td>
+                    <td class="col4">行李重量(KG)</td>
+                    <td class="col5">操作</td>
+                    <td class="col0">baggage_type_select_index</td>
+                </tr>
+            </table>
+            <div id="lowerLbl" align="center">
+                <p>共</p>
+                <p id="rowsNum">0</p>
+                <p>条</p>
+                <select id="sel" onclick="pagination()">
+                    <option id="opt0" value="10">10条/页</option>
+                    <option id="opt1" value="20">20条/页</option>
+                    <option id="opt2" value="50">50条/页</option>
+                </select>
+                &nbsp;
+                <button onclick="last()"><</button>
+                <button id="pno" style="background-color: #5899ce; color: white">1</button>
+                <button onclick="next()">></button>
+                &nbsp;
+                <p>前往</p>
+                <input type="text" id="gopg" onclick="gopage()" />
+                <p>页</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div id="total2">
+    <div class="top">
+        <img src="../resource/logo.gif">
+        <font size="9"  style="font-family: 楷体">中国国际航空公司行李托运计算器</font>
+        <p style="display: inline;"> > 行李信息 </p>
+    </div>
+    <div style="margin-right: 180px; margin-top: 25px; padding-bottom: 25px; padding-right: 25px; padding-left: 25px" class="main_text">
+        <h3>其它特殊行李：</h3>
+        高尔夫球包、保龄球、滑翔伞/降落伞、滑雪/滑水用具（
+        不包括雪橇/水撬）、轮滑/滑板用具、潜水用具、射箭用
+        具、曲棍球用具、冰球用具、网球用具、登山用具、自行车
+        睡袋、背包、野营用具、渔具、乐器、辅助设备（非残疾、
+        伤、病旅客托运）、可折叠婴儿床、可折叠婴儿车或婴儿
+        摇篮或婴儿汽车安全座椅（非婴儿旅客托运）
+        <h3>行李重量范围：</h3>
+        <p>国内航线普通行李 2-45KG
+        <p>其它航线的普通行李 2-32KG
+        <p>可作为行李运输的弹药 2-5KG
+        <p>皮划艇/独木舟、悬挂式滑翔运动用具、雪橇/水撬、冲浪板、风帆冲浪用具、橡皮艇或船 2-45KG
+        <p>撑杆、标枪、单独包装的划船用具或浆、骑马用具 2-45KG
+        <p>其它特殊行李 2-32KG
+
+    </div>
+    <div class="main" align="center">
+        <table id="table2" cellspacing="18px">
+            <tr class="table2Tr">
+                <td class="table2Td1" align="right">行李类型</td>
+                <td class="table2Td2">
+                    <select name="baggage_type" id="baggage_type" class="sel_input" onclick="changeWidth()" onblur="resetWidth()">
+                        <option value="type0">普通行李</option><!--计算尺寸和重量-->
+                        <option value="type1">残疾、伤、病旅客的一件小型可放入客舱的辅助设备</option><!---->
+                        <option value="type2">残疾、伤、病旅客的其它一件辅助设备</option>
+                        <option value="type3">折叠式婴儿车或摇篮</option><!--婴儿免费，其他人计算尺寸和重量-->
+                        <option value="type4">导盲犬/助听犬/精神抚慰犬/骨灰</option><!--导盲犬/助听犬/精神抚慰犬/骨灰-->
+                        <option value="type5">皮划艇/独木舟、悬挂式滑翔运动用具、雪橇/水撬、冲浪板、风帆冲浪用具、橡皮艇或船</option><!---->
+                        <option value="type6">撑杆、标枪、单独包装的划船用具或浆、骑马用具</option>
+                        <option value="type7">精密仪器、电子产品及精密设备</option><!--不免费，要计算重量-->
+                        <option value="type8">可作为行李运输的枪支</option><!--不免费，重量-->
+                        <option value="type9">可作为行李运输的弹药</option><!--不免费，不计算尺寸，有重量限制5KG-->
+                        <option value="type10">小动物</option><!--不免费，不计算尺寸，计算重量-->
+                        <option value="type11">其它特殊行李</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="table2Tr">
+                <td class="table2Td1" align="right">行李长度</td>
+                <td class="table2Td2"><input id="baggage_size_l" type="number" min="0" max="100" class="input" onblur="limitNum(this)"/></td>
+                <td>0-100CM</td>
+            </tr>
+            <tr class="table2Tr">
+                <td class="table2Td1" align="right">行李宽度</td>
+                <td class="table2Td2"><input id="baggage_size_w" type="number" min="0" max="60" class="input" onblur="limitNum(this)"/></td>
+                <td>0-60CM</td>
+            </tr>
+            <tr class="table2Tr">
+                <td class="table2Td1" align="right">行李高度</td>
+                <td class="table2Td2"><input id="baggage_size_h" type="number" min="0" max="40" class="input" onblur="limitNum(this)"/></td>
+                <td>0-40CM</td>
+            </tr>
+            <tr class="table2Tr">
+                <td class="table2Td1" align="right">行李重量</td>
+                <td class="table2Td2"><input id="baggage_weight" type="number" class="input" /></td>
+                <td>KG</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input id="submit1" style="height: 35px; width: 80px;" type="button" value="提交" onclick="submit1()" /></td>
+                <td><input id="submit2" style="height: 35px; width: 80px; display: none" type="button" value="提交" onclick="submit2()" /></td>
+                <td><input id="goBack" style="height: 35px; width: 80px;" type="button" value="返回" onclick="goBack()" /></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+
+<script>
+    function changeWidth(){
+
+    }
+
+</script>
+
+</html>
